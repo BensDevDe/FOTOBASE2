@@ -7,7 +7,8 @@ dotenv.config();
 const app = express();
 
 
-app.use(cors());
+app.use(cors({origin: true, credentials: true}));
+app.use(express.json())
 
 mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`)
 .then( ()=>{
@@ -19,6 +20,9 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${
     console.log(err);
 });
 
-app.listen(3000, () => {
-    console.log(`server started on port 3000 :) `);
+
+app.use("/user", require("./routes/User"))
+
+app.listen(3001, () => {
+    console.log(`server started on port 3001 :) `);
 });
