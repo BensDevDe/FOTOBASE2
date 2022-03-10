@@ -2,23 +2,29 @@ import React, { useState } from "react";
 import SignUpContext from "./SignUpContext";
 
 const SignUpState = (props) => {
-  const [signUpShow, setSignUpShow] = useState(false);
   const [isShowLogin, setIsShowLogin] = useState(false);
-  const [isShowUpload, setIsShowUpload] = useState(false)
+  const [isShowUpload, setIsShowUpload] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLoginClick = () => {
-      setIsShowLogin((isShowLogin)=> !isShowLogin)
-  }
-
-  const handleRegisterClick = () => {
-      setSignUpShow((signUpShow)=> !signUpShow)
-  }
+    setIsShowLogin((isShowLogin) => !isShowLogin);
+  };
 
   const handleUploadClick = () => {
-    setIsShowUpload((isShowUpload)=> !isShowUpload)
-}
+    setIsShowUpload((isShowUpload) => !isShowUpload);
+  };
   return (
-    <SignUpContext.Provider value={{ signUpShow, setSignUpShow, isShowLogin, setIsShowLogin, handleLoginClick, handleRegisterClick, handleUploadClick, isShowUpload }}>
+    <SignUpContext.Provider
+      value={{
+        isShowLogin,
+        setIsShowLogin,
+        handleLoginClick,
+        handleUploadClick,
+        isShowUpload,
+        isAuthenticated,
+        setIsAuthenticated,
+      }}
+    >
       {props.children}
     </SignUpContext.Provider>
   );
