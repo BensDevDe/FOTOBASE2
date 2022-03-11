@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.registerController = async (req, res) => {
   const {

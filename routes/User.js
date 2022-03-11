@@ -4,8 +4,11 @@ const { registerController } = require("../controllers/registerController");
 const { loginController } = require("../controllers/loginController");
 const { logoutController } = require("../controllers/logoutController");
 
-router.post("/register", registerController);
-router.post("/login", loginController);
+const { validateCredentials } = require("../middleware/requestValidator");
+const { uploadFile } = require("../middleware/uploadFile");
+
+router.post("/register",validateCredentials, registerController);
+router.post("/login",validateCredentials, loginController);
 router.post("/logout", logoutController);
 
 module.exports = router;

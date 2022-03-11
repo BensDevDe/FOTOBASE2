@@ -3,12 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SignUpContext from "./context/SignUpContext";
 
-
 const SignUp = () => {
-  const { isAuthenticated,
-    setIsAuthenticated } =
-  useContext(SignUpContext);
-
+  const { isAuthenticated, setIsAuthenticated, result, setResult } =
+    useContext(SignUpContext);
 
   const [newUser, setNewUser] = useState({
     firstName: "",
@@ -23,7 +20,6 @@ const SignUp = () => {
     password: "",
   });
 
-  const [result, setResult] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -290,8 +286,10 @@ const SignUp = () => {
   ];
 
   return (
-    <div >
-      <form className="col g-3" onSubmit={handleSubmit}>
+    <div>
+      <form NameName="col g-3" onSubmit={handleSubmit}>
+        {" "}
+        Register
         <div className="col-md-3">
           <label for="validationDefault01" className="form-label">
             First name
@@ -335,7 +333,7 @@ const SignUp = () => {
               className="form-control"
               id="validationDefaultUsername"
               aria-describedby="inputGroupPrepend2"
-              // required
+              required
               value={newUser.email}
               onChange={(e) =>
                 setNewUser({ ...newUser, email: e.target.value })
@@ -420,7 +418,6 @@ const SignUp = () => {
             }
           />
         </div>
-
         <div className="col-md-3">
           <label for="validationDefault08" className="form-label">
             Password
@@ -451,13 +448,13 @@ const SignUp = () => {
           </div>
         </div>
         <div className="col-2">
-          <button class="btn btn-primary" type="submit">
+          <button className="btn btn-primary" type="submit">
             Register
           </button>
         </div>
       </form>
       {/* <div>
-      <img src="/images/DSC_0737.jpg" className="img-fluid. max-width: 100%" alt="SignUp" />
+      <img src="/images/DSC_0737.jpg" NameName="img-fluid. max-width: 100%" alt="SignUp" />
       </div> */}
     </div>
   );

@@ -1,10 +1,11 @@
 import React, { useContext, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import axios from "axios"
 
 import SignUpContext from "./context/SignUpContext";
 
 const Navbar = () => {
-  const { handleLoginClick, isShowLogin, setIsShowLogin } =
+  const { handleLoginClick, isShowLogin, setIsShowLogin, isAuthenticated,  } =
     useContext(SignUpContext);
 
   const drawerRef = useRef(null);
@@ -20,6 +21,7 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", closeDrawer);
   });
 
+ 
   return (
     <div>
       <div className={`${isShowLogin ? "wrapper active" : "wrapper show"}`}>
@@ -98,10 +100,10 @@ const Navbar = () => {
                     href="#"
                     onClick={() => handleLoginClick()}
                   >
-                    Sign In
+                    {isAuthenticated ? "Logout" : "Sign In"}
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className={`${isAuthenticated ? "nav-item hide_sign_up" : "nav-item show_sign_up"}`} >
                   <NavLink className="nav-link" to="/signup">
                     Sign Up
                   </NavLink>
