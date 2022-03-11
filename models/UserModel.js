@@ -257,7 +257,7 @@ const userSchema = new Schema({
     },
   },
   birthday: { type: Date },
-  email: requiredString,
+  email: { type: String, unique: true, lowercase: true },
   password: requiredString,
 });
 const UserModel = model("User", userSchema);
