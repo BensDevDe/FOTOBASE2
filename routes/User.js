@@ -7,7 +7,7 @@ const {
   uploadController,
  
 } = require("../controllers/uploadController");
-const {fotoController, sortController} = require("../controllers/fotoController")
+const {fotoController, sortControllerA, sortControllerD} = require("../controllers/fotoController")
 // const { verifyUserController } = require("../controllers/verifyUserController");
 
 const { validateCredentials } = require("../middleware/requestValidator");
@@ -25,7 +25,8 @@ router.post(
   uploadController
 );
 router.get("/fotos", fotoController);
-router.get("/sort", sortController);
+router.get("/fotos/sortA", sortControllerA);
+router.get("/fotos/sortD", sortControllerD);
 
 // router.get("/register/confirm/:confirmationCode", verifyUserController);
 

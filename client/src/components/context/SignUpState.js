@@ -5,28 +5,8 @@ import axios from "axios";
 const SignUpState = (props) => {
   const [isShowLogin, setIsShowLogin] = useState(false);
   const [isShowUpload, setIsShowUpload] = useState(false);
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  // const [result, setResult] = useState(null);
+
   const [isRegistered, SetIsRegistered] = useState(false);
-
-  // function App() {
-  //   const loginSession = JSON.parse(sessionStorage.getItem("login")) || {
-  //   username: "",
-  //   loggedIn: false,
-  //   };
-
-  //   const [username, setUsername] = useState(loginSession["username"]);
-  //   const [loggedIn, setLoggedIn] = useState(loginSession["loggedIn"]);
-
-  //   const handleLogin = (_username) => {
-  //   if (_username) {
-  //   setUsername(_username);
-  //   setLoggedIn(true);
-  //   } else {
-  //   setUsername("");
-  //   setLoggedIn(false);
-  //   }
-  //   };
 
   const [newUser, setNewUser] = useState({
     firstName: "-",
@@ -51,33 +31,18 @@ const SignUpState = (props) => {
     loginSession["isAuthenticated"]
   );
   const [result, setResult] = useState(resultSession["result"]);
-  // const logoutHandler = async () => {
-  //   setIsAuthenticated(false);
-  //   const response = await axios.get("http://localhost:3001/user/logout", {
-  //     withCredentials: true,
-  //   });
-  //   setResult(response.data);
-  // };
-  // const login = sessionStorage.getItem("login");
-  // console.log("test:", login);
+
   console.log(result);
   const handleLoginClick = async () => {
     if (isAuthenticated) {
       setIsAuthenticated(false);
 
-      // sessionStorage.setItem("login", "false");
       const response = await axios.get("http://localhost:3001/user/logout", {
         withCredentials: true,
       });
-      // setResult(response.data);
-      // sessionStorage.removeItem(result);
     } else {
       setIsShowLogin((isShowLogin) => !isShowLogin);
     }
-
-    // if (!isAuthenticated) {
-    //   setResult(null);
-    // }
   };
 
   const handleLogout = async () => {
@@ -91,10 +56,6 @@ const SignUpState = (props) => {
     } catch (err) {
       console.log(err);
     }
-
-    // if (!isAuthenticated) {
-    //   setResult(null);
-    // }
   };
 
   const handleUploadClick = () => {
@@ -124,15 +85,12 @@ const SignUpState = (props) => {
         setIsAuthenticated,
         result,
         setResult,
-        // logoutHandler,
+
         newUser,
         setNewUser,
         isRegistered,
         SetIsRegistered,
         handleLogout,
-        // loggedIn,
-        // setLoggedIn,
-        // login
       }}
     >
       {props.children}

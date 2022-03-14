@@ -23,7 +23,7 @@ exports.fotoController = async (req, res) => {
     .json({ msg: "foto list", count: fotoList.length, fotoList });
 };
 
-exports.sortController = async (req, res) => {
+exports.sortControllerA = async (req, res) => {
   const page = req.query.page;
   const limit = req.query.limit;
   const skip = (page - 1) * limit;
@@ -46,3 +46,29 @@ exports.sortController = async (req, res) => {
     .status(200)
     .json({ msg: "foto list", count: fotoList.length, fotoList });
 };
+
+
+exports.sortControllerD = async (req, res) => {
+  const page = req.query.page;
+  const limit = req.query.limit;
+  const skip = (page - 1) * limit;
+  const fotoList = await ImageModel.find()
+    .sort({ title: -1 })
+    .lean()
+    .skip(skip)
+    .limit(limit)
+
+    .populate({
+      path: "added_by",
+      select: "-password",
+    });
+
+  console.log(fotoList);
+  if (!fotoList) {
+    return res.status(404).json({ msg: "no fotos yet" });
+  }
+  return res
+    .status(200)
+    .json({ msg: "foto list", count: fotoList.length, fotoList });
+};
+

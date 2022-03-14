@@ -11,18 +11,31 @@ const Upload = () => {
   const { handleUploadClick, isShowUpload, isAuthenticated } =
     useContext(SignUpContext);
 
-  const { isSortA, SetIsSortA, handleSortA } = useContext(FotoContext);
-
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [keywords, setKeywords] = useState([]);
+  const [comment, setComment] = useState("");
   const changeTitle = (e) => {
     setTitle(e.target.value);
+  };
+  const changeDate = (e) => {
+    setDate(e.target.value);
+  };
+  const changeKeywords = (e) => {
+    setKeywords(e.target.value);
+  };
+  const changeComment = (e) => {
+    setComment(e.target.value);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append("avatar", file);
     data.append("title", title);
+    data.append("date", date);
+    data.append("comment", comment);
+    data.append("keywords", keywords);
 
     const config = {
       headers: {
@@ -54,9 +67,18 @@ const Upload = () => {
     }
   };
 
-  const sortFotos = async (page = 1, limit = 300) => {
+  const sortFotosA = async (page = 1, limit = 300) => {
     const result = await axios.get(
-      `http://localhost:3001/user/sort?page=${page}&limit=${limit}`
+      `http://localhost:3001/user/fotos/sortA?page=${page}&limit=${limit}`
+    );
+    if (result) {
+      setFotos(result.data.fotoList);
+    }
+  };
+
+  const sortFotosD = async (page = 1, limit = 300) => {
+    const result = await axios.get(
+      `http://localhost:3001/user/fotos/sortD?page=${page}&limit=${limit}`
     );
     if (result) {
       setFotos(result.data.fotoList);
@@ -67,22 +89,15 @@ const Upload = () => {
     getFotos();
   }, []);
 
-  // useEffect(() => {
-  //   sortFotos();
-
-  // }, [isSortA]);
-
   useEffect(() => {
     getFotos(page);
   }, [page]);
 
-  // to go to next page
   const next = () => {
     const nextPage = page + 1;
     setPage(nextPage);
   };
 
-  // to go to previous page
   const previous = () => {
     const previousPage = page - 1;
     if (previousPage < 1) {
@@ -159,14 +174,18 @@ const Upload = () => {
                     aria-labelledby="dropdownMenuButton1"
                   >
                     <li>
-                      <button className="dropdown-item" onClick={sortFotos}>
+                      <button className="dropdown-item" onClick={sortFotosA}>
                         Ascending Title
                       </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        href="#"
+                        onClick={sortFotosD}
+                      >
                         Descending Title
-                      </a>
+                      </button>
                     </li>
                     <li>
                       <a className="dropdown-item" href="#">
@@ -203,8 +222,30 @@ const Upload = () => {
                         data-fa-transform="shrink-3 down-2 right-6 rotate-45"
                       ></i>
                     </div>
-                    <label htmlFor="title">Title</label>
-                    <input type="text" name="title" onChange={changeTitle} />
+                    <div>
+                      <label htmlFor="title">Title</label>
+                      <input type="text" name="title" onChange={changeTitle} />
+                    </div>
+                    <div>
+                      <label htmlFor="date">Date</label>
+                      <input type="date" name="date" onChange={changeDate} />
+                    </div>
+                    <div>
+                      <label htmlFor="keywords">Keywords</label>
+                      <input
+                        type="text"
+                        name="keywords"
+                        onChange={changeKeywords}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="comment">Comment</label>
+                      <input
+                        type="text"
+                        name="comment"
+                        onChange={changeComment}
+                      />
+                    </div>
                     <input
                       type="file"
                       id="file"
