@@ -50,6 +50,7 @@ body {
   background-color: #ecf0f3;
   border-radius: 15px;
   box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+  z-index: 999;
 
   position: fixed;
   left: 10%;
@@ -149,15 +150,19 @@ body {
   max-width: 640px;
   padding-top: 60px;
   text-align: center;
+  position: fixed;
+  left: 20%;
+  z-index: 999;
+ 
 }
 
 .container1 {
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
-  /*border: 0.5px solid rgba(130, 130, 130, 0.25);*/
-  /*box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 
-              0 0 0 1px rgba(0, 0, 0, 0.1);*/
+  border: 0.5px solid rgba(130, 130, 130, 0.25);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 
+              0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 .upload-head {
@@ -214,4 +219,14 @@ body {
 
 .hide_sign_up {
   display: none;
+}
+
+
+.image_card {
+  width: 18rem;
+
+}
+
+.foto_colletion {
+  position: fixed;
 }

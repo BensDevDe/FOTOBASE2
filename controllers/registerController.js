@@ -1,8 +1,9 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/UserModel");
+const UserModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken");
-const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const sgMail = require("@sendgrid/mail");
+
+// sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.registerController = async (req, res) => {
   const {
@@ -14,6 +15,7 @@ exports.registerController = async (req, res) => {
     country,
     birthday,
     email,
+    image,
     password,
   } = req.body;
   if (!email || !password)
@@ -36,19 +38,20 @@ exports.registerController = async (req, res) => {
       },
       birthday,
       email,
+      image,
       password: hashedPassword,
     };
 
-    const createdUser = await User.create(newUser);
+    const createdUser = await UserModel.create(newUser);
 
     const payload = { userId: createdUser._Id, email };
-    const token = jwt.sign(payload, "secret");
+    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
     res
       .status(201)
       .cookie("token_cookie", token, { httpOnly: true, secure: false })
       .json(newUser);
-    res.status(200).json({ msg: " User created", createdUser });
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 };

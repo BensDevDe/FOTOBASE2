@@ -1,27 +1,72 @@
-import React, { useContext, useRef, useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import axios from "axios"
+import React, { useContext, useEffect } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import SignUpContext from "./context/SignUpContext";
-
+import FotoContext from "./context/FotoContext";
 const Navbar = () => {
-  const { handleLoginClick, isShowLogin, setIsShowLogin, isAuthenticated,  } =
-    useContext(SignUpContext);
+  const {
+    handleLoginClick,
+    isShowLogin,
+    isAuthenticated,
+    setIsAuthenticated,
+    setResult,
+    setIsShowLogin,
+    result,
+    newUser,
+    setNewUser,
+    handleUploadClick,
+    handleLogout
+  } = useContext(SignUpContext);
 
-  const drawerRef = useRef(null);
+  const { handleFotoClick } = useContext(FotoContext);
+
+  // const drawerRef = useRef(null);
+
+  // useEffect(() => {
+  //   const closeDrawer = (event) => {
+  //     if (drawerRef.current && drawerRef.current.contains(event.target)) {
+  //       return;
+  //     }
+  //     setIsShowLogin(false);
+  //   };
+  //   document.addEventListener("mousedown", closeDrawer);
+  //   return () => document.removeEventListener("mousedown", closeDrawer);
+  // });
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/user/login",
+        newUser,
+        { withCredentials: true }
+      );
+      setResult(response.data);
+      setIsShowLogin((isShowLogin) => !isShowLogin);
+      if (response.data) {
+        setIsAuthenticated(true);
+        // localStorage.setItem("login", "true");
+      }
+    } catch (err) {
+      console.log(err.msg);
+      setResult(err.msg);
+    }
+  };
 
   useEffect(() => {
-    const closeDrawer = (event) => {
-      if (drawerRef.current && drawerRef.current.contains(event.target)) {
-        return;
-      }
-      setIsShowLogin(false);
-    };
-    document.addEventListener("mousedown", closeDrawer);
-    return () => document.removeEventListener("mousedown", closeDrawer);
-  });
+    if (isAuthenticated) navigate("/");
+  }, [isAuthenticated]);
 
- 
+  console.log(isAuthenticated);
+  console.log(result);
+
+  const sessionResult = JSON.parse(sessionStorage.getItem("result"));
+
+  // console.log(sessionResult.result.db_user.name.firstName);
+
   return (
     <div>
       <div className={`${isShowLogin ? "wrapper active" : "wrapper show"}`}>
@@ -34,15 +79,19 @@ const Navbar = () => {
             />{" "}
           </div>
           <div className="text-center mt-4 name"> FOTOBASE </div>
-          <form className="p-3 mt-3">
+          <form className="p-3 mt-3" onSubmit={handleSubmit}>
             <div className="form-field d-flex align-items-center">
               {" "}
               <span className="far fa-user"></span>{" "}
               <input
-                type="text"
+                type="email"
                 name="userName"
                 id="userName"
-                placeholder="Username"
+                placeholder="Email"
+                value={newUser.email}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, email: e.target.value })
+                }
               />{" "}
             </div>
             <div className="form-field d-flex align-items-center">
@@ -53,13 +102,20 @@ const Navbar = () => {
                 name="password"
                 id="pwd"
                 placeholder="Password"
+                value={newUser.password}
+                onChange={(e) =>
+                  setNewUser({ ...newUser, password: e.target.value })
+                }
               />{" "}
             </div>{" "}
-            <button className="btn mt-3">Login</button>
+            <button className="btn mt-3" type="submit" value="Sign In">
+              {" "}
+              Login{" "}
+            </button>
           </form>
           <div className="text-center fs-6">
             {" "}
-            <a href="#">Forget password?</a> or <a href="#">Sign up</a>{" "}
+            <Link to="/signup">here</Link>{" "}
           </div>
         </div>
       </div>
@@ -95,15 +151,34 @@ const Navbar = () => {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <a
+                  {isAuthenticated ? <a
+                    className="nav-link"
+                    href="#"
+                    onClick={() => handleLogout()}
+                  > Logout
+                    {/* {login == "true" ? "Logout" : "Sign In"} */}
+                    {/* {isAuthenticated ? "Logout" : "Sign In"} */}
+                  </a> : <a
                     className="nav-link"
                     href="#"
                     onClick={() => handleLoginClick()}
-                  >
-                    {isAuthenticated ? "Logout" : "Sign In"}
+                  > Sign In
+                    {/* {login == "true" ? "Logout" : "Sign In"} */}
+                    {/* {isAuthenticated ? "Logout" : "Sign In"} */}
                   </a>
+
+                  }
+                  
+                  
                 </li>
-                <li className={`${isAuthenticated ? "nav-item hide_sign_up" : "nav-item show_sign_up"}`} >
+                <li
+                  className={`${
+                    // login == "true"
+                    isAuthenticated
+                      ? "nav-item hide_sign_up"
+                      : "nav-item show_sign_up"
+                  }`}
+                >
                   <NavLink className="nav-link" to="/signup">
                     Sign Up
                   </NavLink>
@@ -119,19 +194,24 @@ const Navbar = () => {
                   >
                     Menu
                   </a>
+
                   <ul
                     className="dropdown-menu"
                     aria-labelledby="navbarDropdown"
                   >
                     <li>
-                      <NavLink className="dropdown-item" to="/fotos">
+                      <NavLink className="dropdown-item" to="/upload">
                         Foto Collections
                       </NavLink>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <NavLink
+                        className="dropdown-item"
+                        to="/upload"
+                        onClick={() => handleUploadClick()}
+                      >
                         Upload Foto
-                      </a>
+                      </NavLink>
                     </li>
                     <li>
                       <hr className="dropdown-divider" />
@@ -142,6 +222,21 @@ const Navbar = () => {
                       </a>
                     </li>
                   </ul>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className="nav-link active"
+                    aria-current="page"
+                    to="/"
+                  >
+                    {isAuthenticated
+                      ? `Welcome ${
+                          sessionResult.result
+                            ? sessionResult.result.db_user.name.firstName
+                            : ""
+                        }`
+                      : ""}
+                  </NavLink>
                 </li>
               </ul>
 
