@@ -4,21 +4,20 @@ import axios from "axios";
 import SignUpContext from "./context/SignUpContext";
 
 const SignUp = () => {
-  const { isAuthenticated, setIsAuthenticated, result, setResult } =
+  const { isAuthenticated, setIsAuthenticated, setResult, newUser, setNewUser, isRegistered, SetIsRegistered } =
     useContext(SignUpContext);
 
-  const [newUser, setNewUser] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    street: "",
-    city: "",
-    postcode: "",
-    country: "",
-    birthday: "",
-
-    password: "",
-  });
+  // const [newUser, setNewUser] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   email: "",
+  //   street: "",
+  //   city: "",
+  //   postcode: "",
+  //   country: "",
+  //   birthday: "",
+  //   password: "",
+  // });
 
   const navigate = useNavigate();
 
@@ -32,7 +31,8 @@ const SignUp = () => {
         { withCredentials: true }
       );
       setResult(response.data);
-      setIsAuthenticated(true);
+      console.log({msg: "Welcome, please login!"});
+      SetIsRegistered(true);
     } catch (err) {
       console.log(err.message);
       setResult(err.message);
@@ -40,8 +40,8 @@ const SignUp = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) navigate("/");
-  }, [isAuthenticated]);
+    if (isRegistered) navigate("/");
+  }, [isRegistered]);
 
   const countries = [
     "Afghanistan",
