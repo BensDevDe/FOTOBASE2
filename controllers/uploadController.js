@@ -11,9 +11,12 @@ exports.uploadController = async (req, res) => {
     title: req.body.title,
     image: imagePath,
     added_by: req.user.userId,
+    date: req.body.date,
+    keywords: req.body.keywords,
+    comment: req.body.comment,
   });
 
   return res
     .status(200)
-    .json({ msg: "your image upload was successfull", image });
+    .json({ msg: "your image upload was successfull", img });
 };

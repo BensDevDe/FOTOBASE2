@@ -12,8 +12,8 @@ const Fotos = ({ fotos}) => {
       </div>
       <ul className="list-group list-group-flush">
         <li className="list-group-item">Uploaded from: </li>
-        <li className="list-group-item">Date: </li>
-        <li className="list-group-item">Comments:</li>
+        <li className="list-group-item">Date: {fotos.date}</li>
+        <li className="list-group-item">Comments: {fotos.comment}</li>
       </ul>
       <div className="card-body">
         <a href="#" className="card-link">
