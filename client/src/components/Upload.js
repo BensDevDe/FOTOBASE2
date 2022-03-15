@@ -49,6 +49,8 @@ const Upload = () => {
       .post("http://localhost:3001/user/upload", data, config)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
+
+    handleUploadClick();
   };
 
   // get fotos
@@ -79,6 +81,15 @@ const Upload = () => {
   const sortFotosD = async (page = 1, limit = 300) => {
     const result = await axios.get(
       `http://localhost:3001/user/fotos/sortD?page=${page}&limit=${limit}`
+    );
+    if (result) {
+      setFotos(result.data.fotoList);
+    }
+  };
+
+  const sortFotosDate = async (page = 1, limit = 300) => {
+    const result = await axios.get(
+      `http://localhost:3001/user/fotos/sortDate?page=${page}&limit=${limit}`
     );
     if (result) {
       setFotos(result.data.fotoList);
@@ -188,9 +199,13 @@ const Upload = () => {
                       </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        href="#"
+                        onClick={sortFotosDate}
+                      >
                         By Date
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
