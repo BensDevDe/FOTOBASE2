@@ -42,6 +42,7 @@ const SignUpState = (props) => {
       });
     } else {
       setIsShowLogin((isShowLogin) => !isShowLogin);
+      SetIsRegistered((isRegistered) => !isRegistered);
     }
   };
 
