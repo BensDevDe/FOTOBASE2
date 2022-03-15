@@ -1,7 +1,9 @@
 const Fotos = ({ fotos}) => {
+
+  console.log("fototest:",fotos.image)
   return (
     <div className="card image_card">
-      <img src={`http://localhost:3001${fotos.image}`} className="img-fluid rounded mh-50" alt="..." />
+      {fotos.image&&<img src={`http://localhost:3001${fotos.image}`} className="img-fluid rounded mh-50" alt="..." />}
          
       <div className="card-body">
         <h5 className="card-title">{fotos.title}</h5>
