@@ -16,7 +16,8 @@ const Navbar = () => {
     newUser,
     setNewUser,
     handleUploadClick,
-    handleLogout
+    handleLogout,
+    isRegistered, SetIsRegistered
   } = useContext(SignUpContext);
 
   const { handleFotoClick } = useContext(FotoContext);
@@ -156,15 +157,13 @@ const Navbar = () => {
                     href="#"
                     onClick={() => handleLogout()}
                   > Logout
-                    {/* {login == "true" ? "Logout" : "Sign In"} */}
-                    {/* {isAuthenticated ? "Logout" : "Sign In"} */}
+                   
                   </a> : <a
                     className="nav-link"
                     href="#"
                     onClick={() => handleLoginClick()}
                   > Sign In
-                    {/* {login == "true" ? "Logout" : "Sign In"} */}
-                    {/* {isAuthenticated ? "Logout" : "Sign In"} */}
+                   
                   </a>
 
                   }
@@ -173,7 +172,7 @@ const Navbar = () => {
                 </li>
                 <li
                   className={`${
-                    // login == "true"
+                 
                     isAuthenticated
                       ? "nav-item hide_sign_up"
                       : "nav-item show_sign_up"
@@ -238,6 +237,21 @@ const Navbar = () => {
                       : ""}
                   </NavLink>
                 </li>
+                
+                    {isRegistered
+                      ? <li className="nav-item">
+                      <span><a
+                        className="nav-link"
+                        href="#"
+                        onClick={() => handleLoginClick()}
+                      >  Registration successfull, please <span className="registration_text">Sign In</span>
+                      
+                       
+                      </a> </span></li>
+                      : "" }
+                  
+              
+
               </ul>
 
               <form className="d-flex">

@@ -230,3 +230,16 @@ body {
 .foto_colletion {
   position: fixed;
 }
+
+
+.registration_text {
+  color: greenyellow;
+  font-weight: bold;
+  height: 50px;
+  width: 100px;
+
+}
+
+.registration_text:hover {
+  font-size: 105%;
+}

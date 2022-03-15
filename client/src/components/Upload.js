@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import SignUpContext from "./context/SignUpContext";
 import FotoContext from "./context/FotoContext";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Fotos from "./Fotos";
 
 //Foto Upload
@@ -10,6 +10,8 @@ import Fotos from "./Fotos";
 const Upload = () => {
   const { handleUploadClick, isShowUpload, isAuthenticated } =
     useContext(SignUpContext);
+    const { refreshPage, SetRefreshPage } =
+    useContext(FotoContext);
 
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
@@ -22,9 +24,10 @@ const Upload = () => {
   const changeDate = (e) => {
     setDate(e.target.value);
   };
-  const changeKeywords = (e) => {
-    setKeywords(e.target.value);
-  };
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (refreshPage) navigate("/upload");
+  }, [refreshPage]);
   const changeComment = (e) => {
     setComment(e.target.value);
   };
@@ -51,6 +54,7 @@ const Upload = () => {
       .catch((err) => console.log(err));
 
     handleUploadClick();
+    SetRefreshPage(true);
   };
 
   // get fotos
@@ -58,7 +62,7 @@ const Upload = () => {
   const [fotos, setFotos] = useState([]);
   const [page, setPage] = useState(1);
 
-  const getFotos = async (page = 1, limit = 300) => {
+  const getFotos = async (page = 1, limit = 12) => {
     const result = await axios.get(
       `http://localhost:3001/user/fotos?page=${page}&limit=${limit}`
     );
@@ -69,7 +73,7 @@ const Upload = () => {
     }
   };
 
-  const sortFotosA = async (page = 1, limit = 300) => {
+  const sortFotosA = async (page = 1, limit = 12) => {
     const result = await axios.get(
       `http://localhost:3001/user/fotos/sortA?page=${page}&limit=${limit}`
     );
@@ -78,7 +82,7 @@ const Upload = () => {
     }
   };
 
-  const sortFotosD = async (page = 1, limit = 300) => {
+  const sortFotosD = async (page = 1, limit = 12) => {
     const result = await axios.get(
       `http://localhost:3001/user/fotos/sortD?page=${page}&limit=${limit}`
     );
@@ -87,7 +91,7 @@ const Upload = () => {
     }
   };
 
-  const sortFotosDate = async (page = 1, limit = 300) => {
+  const sortFotosDate = async (page = 1, limit = 12) => {
     const result = await axios.get(
       `http://localhost:3001/user/fotos/sortDate?page=${page}&limit=${limit}`
     );
@@ -117,6 +121,8 @@ const Upload = () => {
       setPage(previousPage);
     }
   };
+
+
 
   return (
     <div>
@@ -245,14 +251,7 @@ const Upload = () => {
                       <label htmlFor="date">Date</label>
                       <input type="date" name="date" onChange={changeDate} />
                     </div>
-                    <div>
-                      <label htmlFor="keywords">Keywords</label>
-                      <input
-                        type="text"
-                        name="keywords"
-                        onChange={changeKeywords}
-                      />
-                    </div>
+                   
                     <div>
                       <label htmlFor="comment">Comment</label>
                       <input
@@ -298,7 +297,7 @@ const Upload = () => {
             })}
         </div>
 
-        <div className="row container fixed-bottom">
+        <div className="row container sticky-bottom">
           <div className="col">
             <p>
               {" "}

@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const path = require("path");
 
 dotenv.config();
 const app = express();
@@ -10,7 +11,8 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
+    origin: true,
   })
 );
 app.use(cookieParser());
@@ -31,6 +33,4 @@ mongoose
 
 app.use("/user", require("./routes/User"));
 
-app.listen(3001, () => {
-  console.log(`server started on port 3001`);
-});
+app.listen(process.env.PORT || 3001 , () => console.log(`server Up on ${process.env.PORT || 3001 }`));
