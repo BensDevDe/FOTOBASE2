@@ -17,7 +17,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static("public"));
+// 
 
 
 mongoose
@@ -32,5 +32,10 @@ mongoose
   });
 
 app.use("/user", require("./routes/User"));
+
+app.use(express.static(path.join(__dirname, "client/build")));
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname + "/client/build/index.html"))
+})
 
 app.listen(process.env.PORT || 3001 , () => console.log(`server Up on ${process.env.PORT || 3001 }`));
